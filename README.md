@@ -7,6 +7,9 @@ generates every type of interview question, plans study time and runs mock inter
 **Stack:** Angular 22 (standalone, Signals, zoneless, Tailwind) · Express 5 + TypeScript + Zod ·
 PostgreSQL + Drizzle ORM + pgvector · Claude API + Ollama · Docker · GitHub Actions
 
+> **Full project plan:** [docs/PROJECT_PLAN.md](docs/PROJECT_PLAN.md): features, syllabus, architecture,
+> AI strategy, database schema, API design, roadmap and decisions.
+
 ## Status
 
 | Phase | What                                                            | Status  |
