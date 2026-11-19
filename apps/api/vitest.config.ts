@@ -5,7 +5,7 @@ export default defineConfig({
     environment: 'node',
     env: {
       NODE_ENV: 'test',
-      DATABASE_URL: 'postgres://prep:prep@localhost:5432/prep_test',
+      DATABASE_URL: 'postgres://prep:prep@localhost:5434/prep_test',
       JWT_SECRET: 'test-secret-that-is-at-least-32-characters-long',
     },
   },

@@ -9,7 +9,8 @@ services:
       POSTGRES_USER: prep
       POSTGRES_PASSWORD: prep
       POSTGRES_DB: prep
-    ports: ['5432:5432']
+    # Host port 5434 so it doesn't clash with other Postgres containers on 5432.
+    ports: ['5434:5432']
     volumes: [pgdata:/var/lib/postgresql/data]
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U prep']
