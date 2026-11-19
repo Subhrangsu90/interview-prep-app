@@ -1,5 +1,7 @@
-# Local development: `docker compose up -d postgres ollama`, then `npm run dev`.
+# Local development: `docker compose up -d postgres`, then `npm run dev`.
 # Full stack in containers: `docker compose --profile app up --build`.
+# Ollama: uses the one installed on your computer (http://localhost:11434) by default.
+# No Ollama installed? `docker compose --profile ollama up -d` and keep OLLAMA_URL as is.
 services:
   postgres:
     image: pgvector/pgvector:pg17
@@ -15,6 +17,7 @@ services:
       retries: 10
 
   ollama:
+    profiles: [ollama]
     image: ollama/ollama:latest
     ports: ['11434:11434']
     volumes: [ollama:/root/.ollama]
@@ -25,8 +28,10 @@ services:
     env_file: .env
     environment:
       DATABASE_URL: postgres://prep:prep@postgres:5432/prep
-      OLLAMA_URL: http://ollama:11434
+      # Reaches Ollama running on your computer from inside the container.
+      OLLAMA_URL: http://host.docker.internal:11434
       CORS_ORIGIN: http://localhost:8080
+    extra_hosts: ['host.docker.internal:host-gateway']
     depends_on:
       postgres: { condition: service_healthy }
     ports: ['3000:3000']

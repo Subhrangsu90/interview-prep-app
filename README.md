@@ -25,7 +25,8 @@ Requirements: Node 22+, Docker.
 
 ```bash
 cp .env.example .env                       # then set JWT_SECRET (32+ chars)
-docker compose up -d postgres ollama       # database + local AI
+docker compose up -d postgres              # database
+ollama pull nomic-embed-text               # embeddings model (uses your installed Ollama)
 npm install                                # also builds packages/shared
 npm run db:migrate
 npm run db:seed                            # optional demo user: demo@prep.local / demo-password
