@@ -1,0 +1,42 @@
+# Local development: `docker compose up -d postgres ollama`, then `npm run dev`.
+# Full stack in containers: `docker compose --profile app up --build`.
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: prep
+      POSTGRES_PASSWORD: prep
+      POSTGRES_DB: prep
+    ports: ['5432:5432']
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U prep']
+      interval: 5s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    ports: ['11434:11434']
+    volumes: [ollama:/root/.ollama]
+
+  api:
+    profiles: [app]
+    build: { context: ., dockerfile: docker/api.Dockerfile }
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://prep:prep@postgres:5432/prep
+      OLLAMA_URL: http://ollama:11434
+      CORS_ORIGIN: http://localhost:8080
+    depends_on:
+      postgres: { condition: service_healthy }
+    ports: ['3000:3000']
+
+  web:
+    profiles: [app]
+    build: { context: ., dockerfile: docker/web.Dockerfile }
+    depends_on: [api]
+    ports: ['8080:80']
+
+volumes:
+  pgdata:
+  ollama:

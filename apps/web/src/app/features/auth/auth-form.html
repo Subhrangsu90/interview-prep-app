@@ -1,0 +1,74 @@
+<app-auth-card [heading]="mode === 'login' ? 'Sign in' : 'Create your account'">
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="space-y-4">
+    @if (mode === 'register') {
+      <div>
+        <label for="name" class="block text-sm font-medium text-slate-700">Name</label>
+        <input
+          id="name"
+          formControlName="name"
+          autocomplete="name"
+          class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 focus:border-indigo-600 focus:outline-2 focus:outline-indigo-600"
+          [attr.aria-invalid]="form.controls.name.touched && form.controls.name.invalid"
+          aria-describedby="name-error"
+        />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <p id="name-error" class="mt-1 text-sm text-red-700">Name is required.</p>
+        }
+      </div>
+    }
+    <div>
+      <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 focus:border-indigo-600 focus:outline-2 focus:outline-indigo-600"
+        [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+        aria-describedby="email-error"
+      />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <p id="email-error" class="mt-1 text-sm text-red-700">Enter a valid email.</p>
+      }
+    </div>
+    <div>
+      <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        [attr.autocomplete]="mode === 'login' ? 'current-password' : 'new-password'"
+        class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 focus:border-indigo-600 focus:outline-2 focus:outline-indigo-600"
+        [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+        aria-describedby="password-error"
+      />
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <p id="password-error" class="mt-1 text-sm text-red-700">
+          {{ mode === 'login' ? 'Password is required.' : 'Use at least 8 characters.' }}
+        </p>
+      }
+    </div>
+
+    @if (error()) {
+      <p role="alert" class="rounded-md bg-red-50 px-3 py-2 text-sm text-red-800">{{ error() }}</p>
+    }
+
+    <button
+      type="submit"
+      [disabled]="busy()"
+      class="w-full rounded-md bg-indigo-700 px-4 py-2 font-medium text-white hover:bg-indigo-800 disabled:opacity-60"
+    >
+      {{ busy() ? 'Please wait…' : mode === 'login' ? 'Sign in' : 'Create account' }}
+    </button>
+  </form>
+
+  <p class="mt-6 text-center text-sm text-slate-600">
+    @if (mode === 'login') {
+      New here?
+      <a routerLink="/register" class="font-medium text-indigo-700 underline">Create an account</a>
+    } @else {
+      Already have an account?
+      <a routerLink="/login" class="font-medium text-indigo-700 underline">Sign in</a>
+    }
+  </p>
+</app-auth-card>
